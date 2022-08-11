@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="priv.fruits.mapper"/>
+    <context:component-scan base-package="priv.fruits.service"/>
+    <!--加载连接数据库配置文件-->
+    <context:property-placeholder location="classpath:database.properties" ignore-unresolvable="true" />
+    <!--加载邮箱配置文件-->
+    <context:property-placeholder location="classpath:email.properties" ignore-unresolvable="true"/>
+    <!--druid连接池  -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName"    value="${druid.driver}" />
+        <property name="url" 		value="${druid.url}" />
+        <property name="username" 	        value="${druid.username}" />
+        <property name="password" 	        value="${druid.password}" />
+    </bean>
+
+    <!-- 配置Mybatis-Puls -->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <!-- 指定数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 指定自定义MyBatis的配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- 指定Mapper XML文件的目录 -->
+        <property name="mapperLocations" value="classpath*:priv/fruits/mapperxml/*.xml"/>
+        <!-- 配置 MyBatisPlus 分页插件 -->
+        <property name="plugins">
+            <array>
+                <ref bean="mybatisPlusInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 配置MapperScanner -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定DAO层映射目录 -->
+        <property name="basePackage" value="priv.fruits.mapper"/>
+    </bean>
+
+    <!-- 配置MyBatisPlus分页插件 -->
+    <bean id="mybatisPlusInterceptor" class="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+        <property name="interceptors">
+            <list>
+                <ref bean="paginationInnerInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="paginationInnerInterceptor"
+          class="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor">
+        <!-- 指定数据库为MySQL -->
+        <constructor-arg name="dbType" value="MYSQL"/>
+    </bean>
+    <!-- 配置Mybatis-Puls End -->
+
+    <!--邮箱工具类注入属性-->
+    <bean id="mailAccount" class="cn.hutool.extra.mail.MailAccount">
+        <property name="host" value="${mail.smtp.host}"/>
+        <property name="user" value="${mail.smtp.username}"/>
+        <property name="from" value="${mail.smtp.username}"/>
+        <property name="pass" value="${mail.smtp.password}"/>
+        <property name="socketFactoryClass" value="${mail.smtp.socketFactory.class}"/>
+        <property name="port" value="${mail.smtp.port}"/>
+        <property name="socketFactoryPort" value="${mail.smtp.socketFactoryPort}"/>
+        <property name="sslEnable" value="${mail.smtp.sslEnable}"/>
+        <property name="timeout" value="${mail.smtp.timeout}"/>
+        <property name="auth" value="${mail.smtp.auth}"/>
+    </bean>
+
+    <!-- Mapper动态代理开发  扫包  给定包下的接口文件名和映射文件名必须相同  创建接口的实现类-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="priv.fruits.mapper" />
+    </bean>
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--配置事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="login*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="query*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置切入点表达式-->
+    <aop:config>
+        <aop:pointcut id="pt1" expression="execution(* priv.fruits.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt1" />
+    </aop:config>
+
+    <aop:aspectj-autoproxy  proxy-target-class="true"/>
+</beans>

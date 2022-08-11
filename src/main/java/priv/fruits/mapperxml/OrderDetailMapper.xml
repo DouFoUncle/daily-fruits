@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.fruits.mapper.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="priv.fruits.pojo.OrderDetail">
+    <!--@mbg.generated-->
+    <!--@Table t_order_detail-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="total_price" jdbcType="INTEGER" property="totalPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, order_id, goods_id, goods_num, total_price
+  </sql>
+    <update id="updateGoodsNameByGoodsId">
+      UPDATE t_order_detail
+      SET goods_name = #{goodsName}
+      WHERE goods_id = #{goodsId}
+    </update>
+</mapper>

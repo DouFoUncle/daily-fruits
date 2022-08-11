@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="off">
+    <!-- 文件路径 -->
+    <properties>
+        <!--设置日志在硬盘上输出的目录${log4j:configParentLocation}
+            使用此查找将日志文件放在相对于log4j配置文件的目录中-->
+        <property name="Log_Home">log</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式
+            %L:：输出代码中的行号。
+            %M：输出产生日志信息的方法名。-->
+            <!--"%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() 
+            @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, 
+            WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, 
+            TRACE=Bright White}"-->
+
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} %-5level %class{36}.%M @%L :-> %msg%xEx%n"/>
+        </Console>
+        <!--这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入
+            按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFileInfo"
+                     fileName="${Log_Home}/info.${date:yyyy-MM-dd}.log"
+                     immediateFlush="true"
+                     filePattern="${Log_Home}/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36}.%M @%L :-> %msg%xEx%n"/>
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <filters>
+                <ThresholdFilter level="error" onMatch="DENY"
+                                 onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT"
+                                 onMismatch="DENY"/>
+            </filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <!-- 
+            限制Spring框架日志的输出级别，其它框架类似配置
+            或者使用 AppenderRef 标签，将其输出到指定文件中，记得加上 additivity="false"
+        -->
+        <logger name="org.springframework.core" level="info"/>
+        <logger name="org.springframework.beans" level="info"/>
+        <logger name="org.springframework.context" level="info"/>
+        <logger name="org.springframework.web" level="info"/>
+        <logger name="java.sql" level="debug"/>
+        <logger name="org.apache.ibatis" level="info"/>
+        <!--建立一个默认的root的logger-->
+        <root level="debug">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+        </root>
+
+    </Loggers>
+</Configuration>

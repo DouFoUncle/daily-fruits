@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <!--配置字符编码-->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceResponseEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--配置SpringMVC的核心控制器-->
+  <servlet>
+    <!--spring mvc入口-->
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <!--指定SpringMVC配置文件位置-->
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <!--标注 截获并处理该项目的所有url请求-->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!--指定Spring的配置文件所在的位置 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+  <!--配置Spring的监听器类,初始化Spring 容器,使得Spring的配置文件生效 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!--session过期时间-->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+  <!-- 替换异常页面 -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/error-404</location>
+  </error-page>
+  <error-page>
+    <error-code>400</error-code>
+    <location>/error/error-400</location>
+  </error-page>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/error/error-401</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error/error-500</location>
+  </error-page>
+
+</web-app>

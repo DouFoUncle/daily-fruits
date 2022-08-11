@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.fruits.mapper.CartMapper">
+  <resultMap id="BaseResultMap" type="priv.fruits.pojo.Cart">
+    <!--@mbg.generated-->
+    <!--@Table t_cart-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_price" jdbcType="INTEGER" property="goodsPrice" />
+    <result column="goods_count" jdbcType="INTEGER" property="goodsCount" />
+    <result column="goods_total" jdbcType="INTEGER" property="goodsTotal" />
+    <result column="goods_head_img" jdbcType="VARCHAR" property="goodsHeadImg" />
+    <result column="goods_stock" jdbcType="INTEGER" property="goodsStock" />
+    <result column="disTotal" jdbcType="INTEGER" property="disTotal" />
+    <result column="disPrice" jdbcType="INTEGER" property="disPrice" />
+  </resultMap>
+
+  <select id="getCartInfoByUserId" resultMap="BaseResultMap">
+    SELECT c.id, c.user_id, c.goods_id, c.goods_name, c.goods_price
+               , c.goods_count, c.goods_total, g.goods_head_img, g.goods_stock
+               , (
+                  SELECT ROUND(c.goods_price * (discount / 10))
+                  FROM t_discount
+                  WHERE start_time &lt;= NOW()
+                ) disPrice
+               , (
+                  SELECT ROUND(c.goods_total * (discount / 10))
+                  FROM t_discount
+                  WHERE start_time &lt;= NOW()
+                ) disTotal
+    FROM t_cart c
+    INNER JOIN t_goods g ON g.id = c.goods_id
+    WHERE c.user_id = #{userId}
+  </select>
+
+  <select id="getCartTotalPriceByUserId" resultType="map">
+    SELECT SUM(goods_total) goodsTotal
+           , (
+            SELECT ROUND(SUM(goods_total) * (discount / 10))
+            FROM t_discount
+            WHERE start_time &lt;= NOW()
+          ) disTotal
+    FROM t_cart
+    WHERE user_id = #{userId}
+  </select>
+
+  <select id="selectInfoByParams" resultMap="BaseResultMap">
+    SELECT c.id, c.user_id, c.goods_id, c.goods_name, c.goods_price
+    , c.goods_count, c.goods_total, g.goods_head_img, g.goods_stock
+    FROM t_cart c
+    INNER JOIN t_goods g ON g.id = c.goods_id
+    WHERE c.user_id = #{userId} AND c.goods_id = #{goodsId}
+  </select>
+
+  <update id="updateGoodsNameByGoodsId">
+    UPDATE t_cart
+    SET goods_name = #{goodsName}
+    WHERE goods_id = #{goodsId}
+  </update>
+</mapper>

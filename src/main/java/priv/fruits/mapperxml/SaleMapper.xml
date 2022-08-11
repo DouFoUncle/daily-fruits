@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.fruits.mapper.SaleMapper">
+  <resultMap id="BaseResultMap" type="priv.fruits.pojo.Sale">
+    <!--@mbg.generated-->
+    <!--@Table t_sale-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sale_type" jdbcType="VARCHAR" property="saleType" />
+    <result column="sale_type_flag" jdbcType="VARCHAR" property="saleTypeFlag" />
+    <result column="sale_price" jdbcType="INTEGER" property="salePrice" />
+    <result column="sale_date" jdbcType="TIMESTAMP" property="saleDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, sale_type, sale_type_flag, sale_price, sale_date
+  </sql>
+
+  <!-- 根据时间区间查询数据用于统计 -->
+  <select id="getAllInfoByDateAndFlag" resultType="java.util.HashMap">
+    SELECT DATE(sale_date) 'date', sale_type, sale_type_flag, SUM(sale_price) 'totalPrice'
+    FROM t_sale
+    WHERE DATE(sale_date) &gt;= #{startTime} AND DATE(sale_date) &lt;= #{endTime}
+    <if test="flag != null and flag != ''">
+      AND sale_type_flag = #{flag}
+    </if>
+    GROUP BY date, sale_type, sale_type_flag
+  </select>
+</mapper>

@@ -1,0 +1,34 @@
+
+/*.layui-form-item {*/
+/*    margin-bottom: 0;*/
+/*}*/
+
+.layui-form-pane .layui-form-label {
+    max-width: 110px;
+}
+
+.layui-form-item .layui-input-inline {
+    width: 180px;
+}
+
+.layui-form-pane .layui-form-label {
+    padding: 9px 15px;
+}
+
+.layui-form-select dl {
+    max-height: 225px;
+}
+.layui-table-cell .layui-form-checkbox[lay-skin="primary"] {
+    top: 5px;
+}
+.layui-btn-xs {
+    height: 28px;
+    min-width: 60px;
+    line-height: 28px;
+    font-size: 13px;
+    padding: 0 8px;
+}
+.layui-tree-entry {
+    height: 28px;
+    line-height: 28px;
+}

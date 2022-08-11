@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.fruits.mapper.TDiscountMapper">
+  <resultMap id="BaseResultMap" type="priv.fruits.pojo.TDiscount">
+    <!--@mbg.generated-->
+    <!--@Table t_discount-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="start_time" jdbcType="TIME" property="startTime" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, start_time, discount
+  </sql>
+</mapper>

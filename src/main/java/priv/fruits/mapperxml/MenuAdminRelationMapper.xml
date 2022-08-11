@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.fruits.mapper.MenuAdminRelationMapper">
+  <resultMap id="BaseResultMap" type="priv.fruits.pojo.MenuAdminRelation">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="menu_id" jdbcType="INTEGER" property="menuId" />
+    <association property="menu" javaType="priv.fruits.pojo.Menu">
+      <id column="menu_id" jdbcType="INTEGER" property="id" />
+      <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+      <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+      <result column="url" jdbcType="VARCHAR" property="url" />
+      <result column="icon_name" jdbcType="VARCHAR" property="iconName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    tmar.id, tmar.user_id, tmar.menu_id, tm.parent_id, tm.menu_name, tm.url, tm.icon_name
+  </sql>
+
+  <!-- 根据用户ID查询该用户拥有的所有菜单项 -->
+  <select id="getMenuInfoByUserId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_menu_admin_relation tmar
+    INNER JOIN t_menu tm ON tm.id = tmar.menu_id
+    WHERE tmar.user_id = #{userId}
+    ORDER BY tm.menu_position ASC
+  </select>
+
+
+</mapper>
