@@ -19,9 +19,7 @@
 
 Spring + SpringMVC + MyBatisPlus + JSP + Layui +  jQuery + JavaScript +  MySQL 
 
-#### 非免费开源
-
-#### 需要加Q：943701114，可供学生毕设参考使用，再次强调，非免费开源，非诚勿扰
+#### 下载后打开使用说明文件参考启动
 
 #### 项目视频地址
 
