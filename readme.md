@@ -19,7 +19,9 @@
 
 Spring + SpringMVC + MyBatisPlus + JSP + Layui +  jQuery + JavaScript +  MySQL 
 
-#### 下载后打开使用说明文件参考启动
+#### 仓库代码为压缩版
+
+#### 项目非免费开源，适用于毕业设计，需要请加Q：943701114，非诚勿扰
 
 #### 项目视频地址
 
