@@ -15,13 +15,21 @@
 后台包括： 用户管理、收货地址管理、类型管理、商品管理、货单管理、订单管理、销售统计、系统管理等模块。
 ```
 
-#### 系统技术栈
-
-Spring + SpringMVC + MyBatisPlus + JSP + Layui +  jQuery + JavaScript +  MySQL 
+<br/>
 
 #### 仓库代码为压缩版
 
 #### 项目非免费开源，适用于毕业设计，需要请加Q：943701114，非诚勿扰
+
+<br/>
+
+
+
+#### 系统技术栈
+
+Spring + SpringMVC + MyBatisPlus + JSP + Layui +  jQuery + JavaScript +  MySQL 
+
+
 
 #### 项目视频地址
 
