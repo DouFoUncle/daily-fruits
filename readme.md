@@ -39,9 +39,9 @@ https://www.bilibili.com/video/BV1rZ4y187QP?spm_id_from=333.999.0.0&vd_source=ea
 
 ##### 管理员端截图
 
-| <img src="img/admin1.png" style="zoom:33%;" /> | <img src="img/admin2.png" style="zoom:33%;" /> |
+| ![](https://s1.ax1x.com/2022/10/24/x22sk6.png) | ![](https://s1.ax1x.com/2022/10/24/x226fO.png) |
 | ---------------------------------------------- | ---------------------------------------------- |
-| <img src="img/admin3.png" style="zoom:33%;" /> | <img src="img/admin4.png" style="zoom:33%;" /> |
+| ![](https://s1.ax1x.com/2022/10/24/x22gpD.png) | ![](https://s1.ax1x.com/2022/10/24/x22ytK.png) |
 
 
 
